@@ -10,7 +10,8 @@ We guarantee, that all A, B, C, D have same length of N where 0 ≤ N ≤ 1000.
 from typing import List
 
 
-def check_sum_of_four(a: List[int], b: List[int], c: List[int], d: List[int]) -> int:
+def check_sum_of_four(a: List[int], b: List[int],
+                      c: List[int], d: List[int]) -> int:
     """
     Using dict because it is a O(1) to check a values.
     Similar to TwoSum from LeetCode
@@ -24,7 +25,7 @@ def check_sum_of_four(a: List[int], b: List[int], c: List[int], d: List[int]) ->
             else:
                 sums[i + j] += 1
     for k in c:
-        for l in d:
-            if (k + l) * -1 in sums:
-                counter += sums[(k + l) * -1]
+        for x in d:
+            if (k + x) * -1 in sums:
+                counter += sums[(k + x) * -1]
     return counter

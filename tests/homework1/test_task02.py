@@ -1,7 +1,6 @@
 from homework1.task02 import check_fibonacci
 
 
-
 def test_positive_case1():
     "Testing that sequence given IS a Fibonacci sequence"
     assert check_fibonacci([0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55])
