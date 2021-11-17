@@ -13,7 +13,7 @@ from typing import Sequence
 
 
 @cache
-def check__if_prefect_square(number):
+def check_if_prefect_square(number):
     """
     checking if the number can be from the fibonacci sequence.
     Source:
@@ -24,33 +24,33 @@ def check__if_prefect_square(number):
         return True
 
 
-def check_fibonacci(inp_sequence: Sequence[int]) -> bool:
+def check_if_fibonacci(input_sequence: Sequence[int]) -> bool:
     """Cheking sequence for being a fibonacci sequence."""
 
-    # Checking does a sequince is empty to avoid
+    # Checking sequence for being empty to avoid
     # unnecessary calculations
-    if not len(inp_sequence):
+    if not len(input_sequence):
         return False
 
     # Checking did a first two numbers a fibonacci numbers
     # using a perfect square
-    first_elem = inp_sequence[0]
-    if len(inp_sequence) == 1:
+    first_elem = input_sequence[0]
+    if len(input_sequence) == 1:
         if first_elem == 0:
             return True
-        elif first_elem != 0:
-            if not check__if_prefect_square(first_elem):
+        else:
+            if not check_if_prefect_square(first_elem):
                 return False
     else:
-        second_elem = inp_sequence[1]
+        second_elem = input_sequence[1]
         if first_elem != 0:
-            if not check__if_prefect_square(first_elem):
+            if not check_if_prefect_square(first_elem):
                 return False
         if second_elem != 0:
-            if not check__if_prefect_square(second_elem):
+            if not check_if_prefect_square(second_elem):
                 return False
     # Checking does the rest part of sequence is valid
-    for i in range(2, len(inp_sequence)):
-        if inp_sequence[i] != inp_sequence[i-1] + inp_sequence[i-2]:
+    for i in range(2, len(input_sequence)):
+        if input_sequence[i] != input_sequence[i-1] + input_sequence[i-2]:
             return False
     return True
