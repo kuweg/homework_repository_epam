@@ -17,10 +17,13 @@ with open("some_file.txt") as fi:
 from typing import Tuple
 
 
-def find_maximum_and_minimum(file_name: str) -> Tuple[int, int]:
+def find_maximum_and_minimum(filename: str) -> Tuple[int, int]:
+    """
+    Searching minimum and maximum values from file.
+    """
     max_n = 0
     min_n = 0
-    with open(file_name, 'r') as fh:
+    with open(filename, 'r') as fh:
         for line in fh:
             number = int(line)
             if number > max_n:

@@ -13,8 +13,12 @@ from typing import List
 
 
 def find_maximal_subarray_sum(nums: List[int], k: int) -> int:
+    """
+    Finding maximum sum of subarray whith stated length.
+    """
     max_n = 0
     for i in range(len(nums) - k + 1):
-        if sum(nums[i: i+k]) > max_n:
-            max_n = sum(nums[i: i + k])
+        current_slice = nums[i: i + k]
+        if sum(current_slice) > max_n:
+            max_n = sum(current_slice)
     return max_n
