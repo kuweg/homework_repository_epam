@@ -7,9 +7,9 @@ We guarantee, that the given sequence contain >= 0 integers inside.
 
 """
 
+from functools import cache
 from math import sqrt
 from typing import Sequence
-from functools import cache
 
 
 @cache
