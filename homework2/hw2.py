@@ -21,18 +21,17 @@ from collections import Counter
 from typing import List, Tuple
 
 
-def major_and_minor_elem(inp_list: List) -> Tuple[int, int]:
+def major_and_minor_elem(input_array: List) -> Tuple[int, int]:
     """
     Finding most common and least common elements
     in list using collections.Counter.
     collectins.Counter docs:
     https://docs.python.org/3/library/collections.html#collections.Counter
     """
-    counter = Counter(inp_list)
-    counts = counter.most_common()
-    most_common = counts[0][0]
-    most_common_count = counts[0][1]
-    least_common = counts[-1][0]
-    if most_common_count <= len(inp_list) // 2:
+    element_counter = Counter(input_array).most_common()
+    most_common = element_counter[0][0]
+    most_common_count = element_counter[0][1]
+    least_common = element_counter[-1][0]
+    if most_common_count <= len(input_array) // 2:
         most_common = None
     return most_common, least_common

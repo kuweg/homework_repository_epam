@@ -21,7 +21,7 @@ assert = custom_range(
 from typing import Any, List
 
 
-def custom_range(inp_seq: List[Any], *args) -> List[Any]:
+def custom_range(input_sequence: List[Any], *args) -> List[Any]:
     """
     Implementing a custom range function
     which allows to iterate through any iterable object
@@ -29,11 +29,13 @@ def custom_range(inp_seq: List[Any], *args) -> List[Any]:
     """
     range_args = []
     if len(args) > 3:
-        args = args[: 3]
+        args = args[:3]
     for num, arg in enumerate(args):
         if num < 2:
-            arg = inp_seq.index(arg)
+            arg = input_sequence.index(arg)
         range_args.append(arg)
     range_args = tuple(range_args)
-    result = [inp_seq[element] for element in range(*range_args)]
-    return result
+    custom_range_result = [
+        input_sequence[element] for element in range(*range_args)
+        ]
+    return custom_range_result
