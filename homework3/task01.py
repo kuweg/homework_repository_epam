@@ -55,14 +55,3 @@ def cache(times: int) -> Callable:
         return wrapper
 
     return outer
-
-
-@cache(times=2)
-def foo(a, b):
-    return a * b
-
-
-a = foo(2, 3)
-b = foo(2, 3)
-c = foo(2, 3)
-assert b is not c
