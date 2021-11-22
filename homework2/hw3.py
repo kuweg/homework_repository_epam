@@ -18,7 +18,7 @@ from itertools import product
 from typing import Any, List
 
 
-def combinations(*args: List[Any]) -> List[List]:
+def make_combinations(*args: List[Any]) -> List[List]:
     """
     Producing all posiible combinations of lists
     using itertools.

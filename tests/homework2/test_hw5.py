@@ -1,10 +1,10 @@
 import string
 
-from homework2.hw5 import custom_range
+from homework2.hw5 import make_custom_range
 
 
 def test_positive_case1():
-    assert custom_range(string.ascii_lowercase, "g") == [
+    assert make_custom_range(string.ascii_lowercase, "g") == [
         "a",
         "b",
         "c",
@@ -15,7 +15,7 @@ def test_positive_case1():
 
 
 def test_positive_case2():
-    assert custom_range(string.ascii_lowercase, "g", "p") == [
+    assert make_custom_range(string.ascii_lowercase, "g", "p") == [
         "g",
         "h",
         "i",
@@ -29,7 +29,7 @@ def test_positive_case2():
 
 
 def test_positive_case3():
-    assert custom_range(string.ascii_lowercase, "p", "g", -2) == [
+    assert make_custom_range(string.ascii_lowercase, "p", "g", -2) == [
         "p",
         "n",
         "l",
@@ -39,11 +39,11 @@ def test_positive_case3():
 
 
 def test_positive_case4():
-    assert custom_range(range(0, 10), 5) == [0, 1, 2, 3, 4]
+    assert make_custom_range(range(0, 10), 5) == [0, 1, 2, 3, 4]
 
 
 def test_negative_case1():
-    assert not custom_range(string.ascii_lowercase, "g") == [
+    assert not make_custom_range(string.ascii_lowercase, "g") == [
         "f",
         "a",
         "c",
@@ -54,12 +54,14 @@ def test_negative_case1():
 
 
 def test_negative_case2():
-    assert not custom_range(string.ascii_lowercase, "a", "b") == ["a", "b"]
+    assert not make_custom_range(
+        string.ascii_lowercase, "a", "b"
+        ) == ["a", "b"]
 
 
 def test_negative_case3():
-    assert not custom_range(range(1, 10), 1, 5, 1) == [1, 3, 4]
+    assert not make_custom_range(range(1, 10), 1, 5, 1) == [1, 3, 4]
 
 
 def test_negative_case4():
-    assert not custom_range(range(1, 10), 1, 5, 2) == [1, 3, 5]
+    assert not make_custom_range(range(1, 10), 1, 5, 2) == [1, 3, 5]

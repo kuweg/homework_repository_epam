@@ -24,7 +24,7 @@ def chars_generator_from_file(
                 yield char
 
 
-def word_generator_from_file(
+def words_generator_from_file(
     file_path: str, encoding: str = "utf8", errors_handler: str = None
 ) -> Iterable:
     """
@@ -43,19 +43,18 @@ def get_longest_diverse_words(
 ) -> List[str]:
     """
     Finding longest word with largest amount of unique symbols.
-    collections.defaultdict() was used:"
     https://docs.python.org/3/library/collections.html#collections.defaultdict
     """
     words_stat = defaultdict()
-    for word in word_generator_from_file(file_path, encoding, errors_handler):
+    for word in words_generator_from_file(file_path, encoding, errors_handler):
         words_stat[word.strip(string.punctuation)] = len(set(word))
 
     sorted_list_with_counts = sorted(
         words_stat.items(), key=lambda k: (k[1], len(k[0])), reverse=True
     )
     longest_words = []
-    _CONSTANT_WORDS = 10
-    for pair in sorted_list_with_counts[:_CONSTANT_WORDS]:
+    CONSTANT_WORDS = 10
+    for pair in sorted_list_with_counts[:CONSTANT_WORDS]:
         longest_words.append(pair[0])
     return longest_words
 
@@ -65,7 +64,6 @@ def get_rarest_char(
 ) -> str:
     """
     Finding least common char in file.
-    collections.defaultdict() was used:"
     https://docs.python.org/3/library/collections.html#collections.defaultdict
     """
     chars_stat = defaultdict(int)
@@ -111,8 +109,6 @@ def get_most_common_non_ascii_char(
 ) -> str:
     """
     Finding the most common non-ascii char in file
-    using collections.Counter().
-    Documentation:
     https://docs.python.org/3/library/collections.html#collections.Counter
     """
     non_ascii_chars_counter = Counter()

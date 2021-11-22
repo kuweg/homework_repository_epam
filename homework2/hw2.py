@@ -21,7 +21,7 @@ from collections import Counter
 from typing import List, Tuple
 
 
-def major_and_minor_elem(input_array: List) -> Tuple[int, int]:
+def find_major_and_minor_elem(input_array: List) -> Tuple[int, int]:
     """
     Finding most common and least common elements
     in list using collections.Counter.
