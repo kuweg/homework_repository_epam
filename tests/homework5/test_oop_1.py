@@ -2,7 +2,6 @@ import datetime
 
 from homework5.oop_1 import Student, Teacher
 
-
 student = Student('Nikita', 'Zaitsev')
 teacher = Teacher('Ivan', 'Ivanov')
 expired_homework = teacher.create_homework('Learn functions', 0)
