@@ -53,9 +53,9 @@ class Homework:
 
 
 class Student:
-    __slots__ = ["first_name", "last_name"]
+    __slots__ = ["last_name", "first_name"]
 
-    def __init__(self, first_name, last_name) -> None:
+    def __init__(self, last_name, first_name) -> None:
         self.first_name = first_name
         self.last_name = last_name
 
@@ -69,9 +69,9 @@ class Student:
 
 
 class Teacher:
-    __slots__ = ["first_name", "last_name"]
+    __slots__ = ["last_name", "first_name"]
 
-    def __init__(self, first_name, last_name) -> None:
+    def __init__(self, last_name, first_name) -> None:
         self.first_name = first_name
         self.last_name = last_name
 

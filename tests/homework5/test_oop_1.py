@@ -10,13 +10,13 @@ weekly_homework = teacher.create_homework('Lecture 5', 7)
 
 
 def test_student_name():
-    assert (student.first_name == 'Nikita' and
-            student.last_name == 'Zaitsev')
+    assert (student.last_name == 'Nikita' and
+            student.first_name == 'Zaitsev')
 
 
 def test_teacher_name():
-    assert (teacher.first_name == 'Ivan' and
-            teacher.last_name == 'Ivanov')
+    assert (teacher.last_name == 'Ivan' and
+            teacher.first_name == 'Ivanov')
 
 
 def test_expired_homework_deadline():
