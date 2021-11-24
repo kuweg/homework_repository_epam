@@ -4,8 +4,14 @@ import pytest
 
 from homework4.task_2_mock_input import count_dots_on_i
 
+with open("tests/homework4/Example_Domain.html", "r") as html:
+    mock_data = html.read()
 
-def test_example_from_task():
+
+# Mocking a return form open_url() with a saved copy
+# of url's web-page from task description.
+@mock.patch("homework4.task_2_mock_input.open_url", return_value=mock_data)
+def test_example_from_task(mock):
     assert count_dots_on_i("https://example.com/") == 59
 
 

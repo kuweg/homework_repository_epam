@@ -29,22 +29,23 @@ You will learn:
 *** https://docs.python.org/3/tutorial/errors.html#handling-exceptions
 **** https://docs.python.org/3/tutorial/errors.html#raising-exceptions
 """
+import os
 
 
 def read_magic_number(file_path: str) -> bool:
     """
     Checking file for having a number in first line.
-    Return True if it in range, else return False
+    Return True if it in range, otherwise False
     """
+    if not os.path.isfile(file_path):
+        raise FileExistsError
     with open(file=file_path) as file_handler:
-        for line in file_handler:
-            try:
-                number = int(line)
-                break
-            except ValueError:
-                raise ValueError("Should be an integer")
-    print(number)
-    if number in range(1, 3):
+        first_line = file_handler.readline()
+        try:
+            number = int(first_line)
+        except ValueError:
+            raise ValueError("Should be an integer")
+    CONSTANT_RANGE = (1, 3)
+    if number in range(*CONSTANT_RANGE):
         return True
-    else:
-        return False
+    return False

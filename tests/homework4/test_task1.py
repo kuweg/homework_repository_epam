@@ -5,16 +5,19 @@ import pytest
 
 from homework4.task_1_read_file import read_magic_number
 
-os.chdir("tests/homework4")
 file_name = "test_file.txt"
 dummy_file = "dummy_file.txt"
+
+
+@pytest.fixture
+def set_chdir():
+    os.chdir("tests/homework4")
 
 
 def _test_file_existance(file_name: str) -> bool:
     if file_name in os.listdir():
         return True
-    else:
-        return False
+    return False
 
 
 def _create_file_with_numbers(
@@ -62,6 +65,11 @@ def test_value_error():
     _create_file_with_numbers(file_name, ["a", 1])
     with pytest.raises(ValueError):
         read_magic_number(file_name)
+
+
+def test_file_exists_error():
+    with pytest.raises(FileExistsError):
+        read_magic_number('text.txt')
 
 
 def test_file_deleting_positive():
