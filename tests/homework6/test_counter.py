@@ -3,11 +3,14 @@ from homework6.counter import instances_counter
 
 @instances_counter
 class Foo:
+    """A simple Foo class
+    without init and methods."""
     pass
 
 
 @instances_counter
 class Dog:
+    """A simple Dog class with init and method."""
     def __init__(self, bark) -> None:
         self.bark = bark
 

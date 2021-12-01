@@ -32,17 +32,17 @@ def test_shared_variable():
     assert temp_1 == Teacher.homework_done
 
 
+def test_instance_after_do_homework():
+    assert isinstance(result_1, HomeworkResult) is True
+
+
 def test_deadline_error():
     false_hw = Homework("Test function", 0)
     with pytest.raises(DeadlineError):
         good_student.do_homework(false_hw, "trying my best")
 
 
-def test_instance_after_do_homework():
-    assert isinstance(result_1, HomeworkResult) is True
-
-
-def test_instance_error():
+def test_instance_homework_error():
     with pytest.raises(InstanceError):
         opp_teacher.check_homework("Error")
 
@@ -54,3 +54,8 @@ def test_error_existing_homework():
 
 def test_homework_done():
     assert len(Teacher.homework_done) == 2
+
+
+def test_reset_results():
+    Teacher.reset_results()
+    assert len(Teacher.homework_done) == 0

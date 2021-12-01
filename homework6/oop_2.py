@@ -49,30 +49,63 @@ PEP8 соблюдать строго.
 К названием остальных переменных, классов и тд. подходить ответственно -
 давать логичные подходящие имена.
 """
+import abc
 import datetime
 from collections import defaultdict
 from pprint import pprint
 
 
 class DeadlineError(Exception):
+    """
+    Error for homework tasks
+    which have expired.
+    """
     pass
 
 
 class AlreadyCheckedError(Exception):
+    """Error for already checked homework tasks
+    to avoid unwanted changes in do_homework dict."""
     pass
 
 
 class InstanceError(Exception):
+    """My error for wrong input type."""
     pass
 
 
+class Person:
+    """Parent class to keep code DRY"""
+    def __init__(self, last_name: str, first_name: str) -> None:
+        self.last_name = last_name
+        self.first_name = first_name
+
+    def __repr__(self) -> str:
+        return f"'{self.first_name} {self.last_name}'"
+
+
+class BaseStudent(Person):
+    """Class to help clarify that
+    some functions may need a Student object, even
+    if they initialized before it (forward declaration).
+    """
+    @abc.abstractmethod
+    def do_homework(self, homework, solution):
+        raise NotImplementedError
+
+    def __repr__(self) -> str:
+        return super().__repr__()
+
+
 class Homework:
+    """Class which contains information about homework."""
     def __init__(self, task_text, deadline) -> None:
         self.text = task_text
         self.deadline = datetime.timedelta(deadline)
         self.created = datetime.datetime.now()
 
     def is_active(self):
+        """Checking does a homework still valid."""
         return datetime.datetime.now() < self.created + self.deadline
 
     def __str__(self) -> str:
@@ -89,7 +122,13 @@ class Homework:
 
 
 class HomeworkResult:
-    def __init__(self, author, homework: Homework, solution: str) -> None:
+    """Class which contains information about completed
+        homework tasks from Homework object.
+    """
+    def __init__(
+            self, author: BaseStudent,
+            homework: Homework, solution: str
+            ) -> None:
 
         if not isinstance(homework, Homework):
             raise InstanceError("You gave a not Homework object")
@@ -106,17 +145,13 @@ class HomeworkResult:
         )
 
 
-class Person:
-    def __init__(self, last_name: str, first_name: str) -> None:
-        self.last_name = last_name
-        self.first_name = first_name
+class Student(BaseStudent):
+    """This class is imitating a simple student behaviour."""
 
-    def __repr__(self) -> str:
-        return f"'{self.first_name} {self.last_name}'"
-
-
-class Student(Person):
     def do_homework(self, homework: Homework, solution) -> HomeworkResult:
+        """Checking Homework object being an actual and
+        transfer it to HomeworkResult object.
+        """
         if not homework.is_active():
             raise DeadlineError("You are late!")
         return HomeworkResult(self, homework, solution)
@@ -126,27 +161,37 @@ class Student(Person):
 
 
 class Teacher(Person):
+    """This class is imitating a simple teacher behaviour."""
 
     homework_done = defaultdict(list)
+    APPROVING_LENGTH = 5
 
     @staticmethod
     def create_homework(homework_task, homework_deadline) -> Homework:
+        """Homework's instances constructor."""
         return Homework(homework_task, homework_deadline)
 
     def check_homework(self, homework_res: HomeworkResult) -> bool:
+        """Checking HomeworkResult object being valid according
+        specified criterias.
+        """
         if not isinstance(homework_res, HomeworkResult):
             raise InstanceError("You gave not a HomeworkResult object")
 
         if homework_res in self.homework_done.values():
             raise AlreadyCheckedError("Homework has been already accepted")
 
-        if len(homework_res.solution) > 5:
+        if len(homework_res.solution) > self.APPROVING_LENGTH:
             self.homework_done[homework_res.homework] = homework_res
             return True
         return False
 
     @classmethod
     def reset_results(cls, homework=None):
+        """
+        This method deletes a passed object from a common variable
+        or cleans that variable in case of empty input.
+        """
         if homework and isinstance(homework, Homework):
             cls.homework_done.pop(homework)
         else:
@@ -176,9 +221,6 @@ if __name__ == "__main__":
     # advanced_python_teacher.check_homework(result_1)
     temp_2 = Teacher.homework_done
     assert temp_1 == temp_2
-
-    print(result_2.homework)
-    print(result_2.author)
 
     opp_teacher.check_homework(result_2)
     opp_teacher.check_homework(result_3)
