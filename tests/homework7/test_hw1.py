@@ -1,6 +1,5 @@
 from homework7.hw1 import find_occurrences
 
-
 task_tree = {
     "first": ["RED", "BLUE"],
     "second": {
