@@ -21,8 +21,6 @@ Example:
 """
 from typing import Callable
 
-import numpy as np
-
 
 def print_debugger(func) -> Callable:
     """Small decorator for debugging purposes."""
@@ -33,25 +31,43 @@ def print_debugger(func) -> Callable:
     return wrapper
 
 
-def check_winner(board: np.array, player: str) -> bool:
+# @print_debugger
+def get_column(matrix: list, index: int) -> list:
+    """Function which returns columns by index."""
+    return [row[index] for row in matrix]
+
+
+# @print_debugger
+def get_diagonal(matrix: list, main: bool = True):
+    """Returns a diagonals of matrix."""
+    matrix_size = len(matrix)
+    if main:
+        diagonal = [matrix[i][i] for i in range(matrix_size)]
+    else:
+        diagonal = [matrix[matrix_size-i-1][i]
+                    for i in range(matrix_size)]
+    return diagonal
+
+
+def check_winner(board: list, player: str) -> bool:
     """
     Checking horizontal, vertical and diagonal combinations
     for winner.
     """
-    board_size = board.shape[0]
+    board_size = len(board)
     for i in range(board_size):
-        if all([move == player for move in board[i, :]]):
+        if all([move == player for move in board[i][:]]):
             return True
-        if all([move == player for move in board[:, i]]):
+        if all([move == player for move in get_column(board, i)]):
             return True
-    if all([move == player for move in board.diagonal()]):
+    if all([move == player for move in get_diagonal(board)]):
         return True
-    if all([move == player for move in np.fliplr(board).diagonal()]):
+    if all([move == player for move in get_diagonal(board, main=False)]):
         return True
     return False
 
 
-def check_completeness(board: np.array, empty_symbol: str = '-') -> bool:
+def check_completeness(board: list, empty_symbol: str = '-') -> bool:
     """Checking does board completed by finding corresponding empty symbols."""
     for _, sublist in enumerate(board):
         if empty_symbol in sublist:
@@ -63,7 +79,6 @@ def check_completeness(board: np.array, empty_symbol: str = '-') -> bool:
 def tic_tac_toe_checker(board: list) -> str:
     """Checking board accroding game's rules"""
     players = ['x', 'o']
-    board = np.array(board)
     if check_winner(board, players[0]):
         return "x wins!"
     elif check_winner(board, players[1]):
@@ -76,8 +91,8 @@ def tic_tac_toe_checker(board: list) -> str:
 
 if __name__ == '__main__':
     board = [['o', 'o', 'x'],
-             ['-', '-', 'x'],
-             ['o', 'o', 'x']]
+             ['-', 'x', 'o'],
+             ['x', 'o', '-']]
 
     # x wins!
     print(tic_tac_toe_checker(board))

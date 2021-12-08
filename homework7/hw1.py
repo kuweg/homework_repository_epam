@@ -11,7 +11,6 @@ from typing import Any
 
 def print_debugger(func):
     """Small decorator for debugging purposes."""
-
     def wrapper(*args, **kwargs):
         res = func(*args, **kwargs)
         print(f"{func.__name__} : {res}")
@@ -78,7 +77,7 @@ def find_occurrences(tree: dict, desired_item) -> int:
                 counter += 1
             elif contains(value, item):
                 counter += 1
-            elif check_types(value, dict):  # can't handle int type
+            elif check_types(value, dict):
                 idx = find_elements_indexes_by_type(value, dict)
                 for _id in idx:
                     recursion(value[_id], item)
