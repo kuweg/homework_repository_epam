@@ -9,41 +9,28 @@ Tree can only contains basic structures like:
 from typing import Any
 
 
-def print_debugger(func):
-    """Small decorator for debugging purposes."""
-    def wrapper(*args, **kwargs):
-        res = func(*args, **kwargs)
-        print(f"{func.__name__} : {res}")
-        return res
-
-    return wrapper
-
-
-# @print_debugger
-def check_types(child_value: Any, desired_type: type) -> bool:
-    """Checks does a list contains a element with desired type."""
+def check_types(child_value: Any, requested_type: type) -> bool:
+    """Checks child value for containing requested data type."""
     if type(child_value) not in [int, bool]:
         types_list = [type(item) for item in child_value]
-        return desired_type in types_list
-    return desired_type is child_value
+        return requested_type in types_list
+    return requested_type is child_value
 
 
-# @print_debugger
 def find_elements_indexes_by_type(
-    elements_list: list, desired_type: type
+    elements_list: list, requested_type: type
         ) -> list:
     """A helper function which returns
-    all occurrences of element with desired type."""
+    all occurrences of element with requested type."""
     elements_indexes = []
-    if any(isinstance(element, desired_type) for element in elements_list):
+    if any(isinstance(element, requested_type) for element in elements_list):
         for index, element in enumerate(elements_list):
-            if isinstance(element, desired_type):
+            if isinstance(element, requested_type):
                 elements_indexes.append(index)
         return elements_indexes
     return False
 
 
-# @print_debugger
 def contains(value: Any, item: Any) -> bool:
     """A little bit hardcoded function to compare two elements."""
     if type(value) is dict:
@@ -68,7 +55,6 @@ def contains(value: Any, item: Any) -> bool:
 def find_occurrences(tree: dict, desired_item) -> int:
     counter = 0
 
-    # @print_debugger
     def recursion(tree: dict, item: str):
         nonlocal counter
 
@@ -89,7 +75,6 @@ def find_occurrences(tree: dict, desired_item) -> int:
 
 
 if __name__ == "__main__":
-    # Example tree:
     example_tree = {
         "first": ["RED", "BLUE"],
         "second": {

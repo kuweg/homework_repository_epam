@@ -19,80 +19,59 @@ Example:
      Return value should be "x wins!"
 
 """
-from typing import Callable
+from typing import List
 
 
-def print_debugger(func) -> Callable:
-    """Small decorator for debugging purposes."""
-    def wrapper(*args, **kwargs):
-        res = func(*args, **kwargs)
-        print(f'{func.__name__} : {res}')
-        return res
-    return wrapper
-
-
-# @print_debugger
-def get_column(matrix: list, index: int) -> list:
+def get_column(matrix: List[list], index: int) -> list:
     """Function which returns columns by index."""
     return [row[index] for row in matrix]
 
 
-# @print_debugger
-def get_diagonal(matrix: list, main: bool = True):
+def get_diagonal(matrix: List[list], main: bool = True):
     """Returns a diagonals of matrix."""
     matrix_size = len(matrix)
     if main:
-        diagonal = [matrix[i][i] for i in range(matrix_size)]
+        diagonal = [sublist[pos] for pos, sublist in enumerate(matrix)]
     else:
-        diagonal = [matrix[matrix_size-i-1][i]
-                    for i in range(matrix_size)]
+        diagonal = [
+            sublist[matrix_size - pos - 1]
+            for pos, sublist in enumerate(matrix)
+        ]
     return diagonal
 
 
-def check_winner(board: list, player: str) -> bool:
-    """
-    Checking horizontal, vertical and diagonal combinations
-    for winner.
-    """
-    board_size = len(board)
-    for i in range(board_size):
-        if all([move == player for move in board[i][:]]):
-            return True
-        if all([move == player for move in get_column(board, i)]):
-            return True
-    if all([move == player for move in get_diagonal(board)]):
-        return True
-    if all([move == player for move in get_diagonal(board, main=False)]):
-        return True
-    return False
+def make_combinations(board: List[list]) -> list:
+    combinations = []
+    for pos, line in enumerate(board):
+        combinations.append(line)
+        combinations.append(get_column(board, pos))
+    combinations.append(get_diagonal(board))
+    combinations.append(get_diagonal(board, main=False))
+
+    return combinations
 
 
-def check_completeness(board: list, empty_symbol: str = '-') -> bool:
+def is_complete(board: List[list], empty_symbol: str = "-") -> bool:
     """Checking does board completed by finding corresponding empty symbols."""
     for _, sublist in enumerate(board):
         if empty_symbol in sublist:
-            return True
-    return False
+            return False
+    return True
 
 
-# @print_debugger
-def tic_tac_toe_checker(board: list) -> str:
+def tic_tac_toe_checker(board: List[list]) -> str:
     """Checking board accroding game's rules"""
-    players = ['x', 'o']
-    if check_winner(board, players[0]):
-        return "x wins!"
-    elif check_winner(board, players[1]):
-        return "o wins!"
-    elif check_completeness(board):
+    combinations = make_combinations(board)
+    for comb in combinations:
+        if len(set(comb)) == 1:
+            return f"{comb[0]} wins!"
+    if not is_complete(board):
         return "unfinished!"
-    else:
-        return "draw!"
+    return "draw!"
 
 
-if __name__ == '__main__':
-    board = [['o', 'o', 'x'],
-             ['-', 'x', 'o'],
-             ['x', 'o', '-']]
+if __name__ == "__main__":
+    board = [["o", "o", "x"], ["-", "x", "o"], ["x", "o", "-"]]
 
     # x wins!
-    print(tic_tac_toe_checker(board))
+    tic_tac_toe_checker(board)

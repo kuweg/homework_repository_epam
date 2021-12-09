@@ -13,25 +13,35 @@ Examples:
     Output: False
     Explanation: s becomes "c" while t becomes "b".
 """
+from typing import Generator
 
 
-def backspace_formatter(string: str, backspace_char: str = '#') -> str:
+def backspace_formatter(string: str, backspace_char: str = "#") -> Generator:
     """A functions which imitates a backspace behaviour."""
-    formatted_list = []
-    for char in string:
-        if char != backspace_char:
-            formatted_list.append(char)
-        elif formatted_list:
-            formatted_list.pop()
-    formatted_string = ''.join(formatted_list)
-    return formatted_string
+    backspace_counter = 0
+    for char in reversed(string):
+        if char != backspace_char and not backspace_counter:
+            yield char
+        elif char == backspace_char:
+            backspace_counter += 1
+        elif char != backspace_char and backspace_counter > 0:
+            backspace_counter -= 1
 
 
-def backspace_compare(first: str, second: str):
-    return backspace_formatter(first) == backspace_formatter(second)
+def backspace_compare(first: str, second: str) -> bool:
+    """Picking items from generators and compare them."""
+    first_string = backspace_formatter(first)
+    second_string = backspace_formatter(second)
+    try:
+        while True:
+            if next(first_string) != next(second_string):
+                return False
+    except StopIteration:
+        return True
 
 
 if __name__ == "__main__":
-    string1 = 'ab#c'
-    string2 = 'ad#c'
-    print(backspace_compare(string1, string2))
+    string1 = "ab#c"
+    string2 = "ad#c"
+    c = backspace_compare(string1, string2)
+    print(c)
