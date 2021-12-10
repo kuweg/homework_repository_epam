@@ -63,7 +63,7 @@ def tic_tac_toe_checker(board: List[list]) -> str:
     """Checking board accroding game's rules"""
     combinations = make_combinations(board)
     for comb in combinations:
-        if len(set(comb)) == 1:
+        if (len(set(comb)) == 1) and ('-' not in set(comb)):
             return f"{comb[0]} wins!"
     if not is_complete(board):
         return "unfinished!"
@@ -71,7 +71,7 @@ def tic_tac_toe_checker(board: List[list]) -> str:
 
 
 if __name__ == "__main__":
-    board = [["o", "o", "x"], ["-", "x", "o"], ["x", "o", "-"]]
+    board = [["-", "x", "o"], ["-", "-", "o"], ["x", "x", "o"]]
 
     # x wins!
-    tic_tac_toe_checker(board)
+    print(tic_tac_toe_checker(board))

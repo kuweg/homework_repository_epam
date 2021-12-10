@@ -49,7 +49,7 @@ def contains(value: Any, item: Any) -> bool:
     elif ((type(value) is list) or (type(value) is tuple)) and (
         type(item) in [list, tuple]
     ):
-        return item == value
+        return item is value
 
 
 def find_occurrences(tree: dict, desired_item) -> int:
