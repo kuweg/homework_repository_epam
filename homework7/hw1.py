@@ -9,72 +9,40 @@ Tree can only contains basic structures like:
 from typing import Any
 
 
-def check_types(child_value: Any, requested_type: type) -> bool:
-    """Checks child value for containing requested data type."""
-    if type(child_value) not in [int, bool]:
-        types_list = [type(item) for item in child_value]
-        return requested_type in types_list
-    return requested_type is child_value
+def find_occurrences(tree: dict, element: Any) -> int:
+    """Function provides recursively search on given dict
+    and counts occurrences of element.
 
+    :param tree: A python dict
+    :param element: An element (Any) which occurrences will be counted
+    :rtype: inner counter's value
+    """
 
-def find_elements_indexes_by_type(
-    elements_list: list, requested_type: type
-        ) -> list:
-    """A helper function which returns
-    all occurrences of element with requested type."""
-    elements_indexes = []
-    if any(isinstance(element, requested_type) for element in elements_list):
-        for index, element in enumerate(elements_list):
-            if isinstance(element, requested_type):
-                elements_indexes.append(index)
-        return elements_indexes
-    return False
-
-
-def contains(value: Any, item: Any) -> bool:
-    """A little bit hardcoded function to compare two elements."""
-    if type(value) is dict:
-        return False
-
-    if type(value) is str and type(item) is str:
-        return value == item
-    elif type(value) is int and type(item) is int:
-        return value == item
-    elif type(value) is bool and type(item) is bool:
-        return value is item
-    elif ((type(value) is list) or (type(value) is tuple)) and (
-        type(item) in [int, str]
-    ):
-        return item in value
-    elif ((type(value) is list) or (type(value) is tuple)) and (
-        type(item) in [list, tuple]
-    ):
-        return item is value
-
-
-def find_occurrences(tree: dict, desired_item) -> int:
+    RECURSIVE_TYPES = tuple, list, set, dict
     counter = 0
 
-    def recursion(tree: dict, item: str):
+    def recursive_search(tree: dict, element):
         nonlocal counter
 
-        for key, value in tree.items():
-            if key == item:
+        if type(tree) is type(element):
+            if tree == element:
                 counter += 1
-            elif contains(value, item):
-                counter += 1
-            elif check_types(value, dict):
-                idx = find_elements_indexes_by_type(value, dict)
-                for _id in idx:
-                    recursion(value[_id], item)
-            elif type(value) is dict:
-                recursion(value, item)
+                return
+
+        if type(tree) not in RECURSIVE_TYPES:
+            return
+
+        _tree = tree.values() if type(tree) == dict else tree
+        for leaf in _tree:
+            recursive_search(tree=leaf, element=element)
+
         return counter
 
-    return recursion(tree, desired_item)
+    return recursive_search(tree, element)
 
 
 if __name__ == "__main__":
+
     example_tree = {
         "first": ["RED", "BLUE"],
         "second": {
@@ -96,6 +64,4 @@ if __name__ == "__main__":
         "deep_key": [{"no_red": "e", "blue": {"super_deep": "RED"}}],
     }
 
-    item = "RED"
-
-    print(find_occurrences(example_tree, item))  # 9
+    print(find_occurrences(example_tree, ["RED", "BLUE"]))

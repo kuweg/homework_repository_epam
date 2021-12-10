@@ -33,18 +33,22 @@ complex_tree = {
         },
     },
     "fourth": "RED",
-    "RED": False,
+    "flag": False,
     "False_key": 0,
     "deep_key": [{"no_red": "e", "blue": {"super_deep": "RED"}}],
 }
 
 
-def test_task_tree():
+def test_task_tree_red_key():
     assert find_occurrences(task_tree, "RED") == 6
 
 
-def test_complex_tree():
-    assert find_occurrences(complex_tree, "RED") == 9
+def test_complex_tree_red_key():
+    assert find_occurrences(complex_tree, "RED") == 8
+
+
+def test_complex_tree_blue_key():
+    assert find_occurrences(complex_tree, "BLUE") == 2
 
 
 def test_int_element_search():
