@@ -1,4 +1,47 @@
+import os
 import sqlite3
+
+
+class MetaSingleton(type):
+    """Sigleton metaclass"""
+
+    _instances = {}
+
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            cls._instances[cls] = super(
+                MetaSingleton, cls
+                ).__call__(*args, **kwargs)
+        return cls._instances[cls]
+
+
+class Database(metaclass=MetaSingleton):
+    """A Singleton class which provides connection to a database."""
+
+    connection = None
+
+    def connect(self, database_path):
+        """Provides connection to a database,
+        make a raw_factory with sqlite3.Raw,
+        returns cursor object.
+        Also checks file path for existance.
+
+        :param database_path: path to a database
+        :type database_path: str
+        :return: cursor object
+        """
+        if self.connection is None:
+            if os.path.isfile(database_path):
+                self.connection = sqlite3.connect(database_path)
+                self.connection.row_factory = sqlite3.Row
+                self.cursorobj = self.connection.cursor()
+            else:
+                raise FileExistsError('File does not exist')
+        return self.cursorobj
+
+    def close(self):
+        """Close connection"""
+        self.connection.close()
 
 
 class TableData:
@@ -14,22 +57,11 @@ class TableData:
         """Class constructor"""
         self.database_path = database_path
         self.table_name = table_name
-        self.connection = sqlite3.connect(self.database_path)
-        self.connection.row_factory = sqlite3.Row
-        self.cursor = self.connection.cursor()
-
-    def connect_to_database(self):
-        """Connection or reconnecting to a database.
-        Allows to reconnect to database without creating
-        a new instance of object in case of disconection.
-        """
-        self.connection = sqlite3.connect(self.database_path)
-        self.connection.row_factory = sqlite3.Row
-        self.cursor = self.connection.cursor()
+        self.cursor = Database().connect(self.database_path)
 
     def close_connection(self):
         """Closing connection to a database."""
-        self.connection.close()
+        Database().close()
 
     def __len__(self):
         """Returns amount of rows in datatable"""
@@ -44,7 +76,7 @@ class TableData:
         :rtype: tuple
         """
         self.cursor.execute(
-            f"SELECT * from {self.table_name} where name=:item", {'item': item}
+            f"SELECT * from {self.table_name} where name=:item", {"item": item}
         )
         return tuple(self.cursor.fetchone())
 
@@ -58,15 +90,13 @@ class TableData:
         :rtype: bool
         """
         self.cursor.execute(
-            f"SELECT * from {self.table_name} where name=:item", {'item': item}
+            f"SELECT * from {self.table_name} where name=:item", {"item": item}
         )
         return self.cursor.fetchone()
 
     def __iter__(self):
         """Allows iterating through datatable's row"""
-        self.cursor.execute(
-            f"SELECT * from {self.table_name}"
-        )
+        self.cursor.execute(f"SELECT * from {self.table_name}")
         return self
 
     def __next__(self):
@@ -78,9 +108,16 @@ class TableData:
 
 
 if __name__ == "__main__":
-    db_path = 'homework8/example.sqlite'
-    presidents = TableData(db_path, 'presidents')
+    db_path = "homework8/example.sqlite"
+    presidents = TableData(db_path, "presidents")
     print(len(presidents))
-    print(presidents['Trump'])
+    print(presidents["Trump"])
     for president in presidents:
-        print(president['name'])
+        print(president["name"])
+
+    presidents1 = TableData(db_path, "presidents")
+    print(id(presidents.cursor))
+    print(id(presidents1.cursor))
+    presidents.close_connection()
+    # print(len(presidents))
+    # print(len(presidents1))
