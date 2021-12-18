@@ -57,15 +57,15 @@ class KeyValueStorage:
                 self.items[key] = value
 
     def __getitem__(self, item):
-        """Overloaded __getitem__, returns value by key."""
+        """Returns value by key."""
         return self.items[item]
 
     def __getattr__(self, item):
-        """Overloaded __getattr__, returns value by key."""
+        """Returns value by key."""
         return self.items[item]
 
     def __str__(self) -> str:
-        """Overloaded __str__ for pretty print"""
+        """A function for pretty print"""
         return f"{self.items}"
 
 

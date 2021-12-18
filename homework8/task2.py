@@ -18,25 +18,26 @@ class MetaSingleton(type):
 class Database(metaclass=MetaSingleton):
     """A Singleton class which provides connection to a database."""
 
-    connection = None
+    def __init__(self, database_path) -> None:
+        """Initalize connection to databese if database file exists.
 
-    def connect(self, database_path):
-        """Provides connection to a database,
-        make a raw_factory with sqlite3.Raw,
-        returns cursor object.
-        Also checks file path for existance.
-
-        :param database_path: path to a database
+        :param database_path: path to database file
         :type database_path: str
+        """
+
+        if os.path.isfile(database_path):
+            self.connection = sqlite3.connect(database_path)
+        else:
+            raise FileExistsError('File does not exist')
+
+    def get_cursor(self):
+        """Initialize cursor object with row factory sqlite3.Row.
+
         :return: cursor object
         """
-        if self.connection is None:
-            if os.path.isfile(database_path):
-                self.connection = sqlite3.connect(database_path)
-                self.connection.row_factory = sqlite3.Row
-                self.cursorobj = self.connection.cursor()
-            else:
-                raise FileExistsError('File does not exist')
+
+        self.connection.row_factory = sqlite3.Row
+        self.cursorobj = self.connection.cursor()
         return self.cursorobj
 
     def close(self):
@@ -44,6 +45,8 @@ class Database(metaclass=MetaSingleton):
         self.connection.close()
 
 
+#validate table name
+#if table name isalnum() raise smth
 class TableData:
     """Wrapper class for database table which acts as collection object.
 
@@ -57,11 +60,12 @@ class TableData:
         """Class constructor"""
         self.database_path = database_path
         self.table_name = table_name
-        self.cursor = Database().connect(self.database_path)
+        self.connection = Database(self.database_path)
+        self.cursor = self.connection.get_cursor()
 
     def close_connection(self):
         """Closing connection to a database."""
-        Database().close()
+        self.connection.close()
 
     def __len__(self):
         """Returns amount of rows in datatable"""
@@ -116,8 +120,8 @@ if __name__ == "__main__":
         print(president["name"])
 
     presidents1 = TableData(db_path, "presidents")
-    print(id(presidents.cursor))
-    print(id(presidents1.cursor))
+    print(id(presidents.connection))
+    print(id(presidents1.connection))
     presidents.close_connection()
     # print(len(presidents))
     # print(len(presidents1))
