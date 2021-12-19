@@ -1,6 +1,6 @@
 import os
 
-from homework8.task2 import TableData, SQLiteClass
+from homework8.task2 import SQLiteClass, TableData
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 datatable_path = os.path.join(BASE_DIR, "example.sqlite")
