@@ -1,54 +1,118 @@
+import abc
 import os
 import sqlite3
+from contextlib import contextmanager
 
 
-class MetaSingleton(type):
-    """Sigleton metaclass"""
+class AbsctractDatabaseClass:
+    """
+    Abstract class for future databases realizations.
+    """
 
-    _instances = {}
+    @abc.abstractmethod
+    def connection_manager(self, *args, **kwargs):
+        raise NotImplementedError
 
-    def __call__(cls, *args, **kwargs):
-        if cls not in cls._instances:
-            cls._instances[cls] = super(
-                MetaSingleton, cls
-                ).__call__(*args, **kwargs)
-        return cls._instances[cls]
+    @abc.abstractmethod
+    def select(self, * args, **kwargs):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def count(self, * args, **kwargs):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def select_by_name(self, * args, **kwargs):
+        raise NotImplementedError
 
 
-class Database(metaclass=MetaSingleton):
-    """A Singleton class which provides connection to a database."""
+class SQLiteClass(AbsctractDatabaseClass):
+    """
+    Class for sql request based tables, which can be accessed
+    using sqlite3 library.
 
-    def __init__(self, database_path) -> None:
-        """Initalize connection to databese if database file exists.
+    :param db_path: path to database
+    :type db_path: str
 
-        :param database_path: path to database file
-        :type database_path: str
-        """
+    """
 
-        if os.path.isfile(database_path):
-            self.connection = sqlite3.connect(database_path)
+    _select_template = 'SELECT * FROM {}'
+    _count_template = 'SELECT COUNT(*) FROM {}'
+    _select_by_name_template = 'SELECT * FROM {} WHERE name=:name'
+
+    def __init__(self, db_path) -> None:
+        if os.path.isfile(db_path):
+            self. db_path = db_path
         else:
             raise FileExistsError('File does not exist')
+        super().__init__()
 
-    def get_cursor(self):
-        """Initialize cursor object with row factory sqlite3.Row.
-
-        :return: cursor object
+    @contextmanager
+    def connection_manager(self):
         """
+        Safe connection manager for database accessing.
+        """
+        try:
+            connection = sqlite3.connect(self.db_path)
+            connection.row_factory = sqlite3.Row
+            cursor = connection.cursor()
+            yield cursor
+        finally:
+            connection.close()
 
-        self.connection.row_factory = sqlite3.Row
-        self.cursorobj = self.connection.cursor()
-        return self.cursorobj
+    def count(self, table_name):
+        """
+        Generates a 'SELECT COUNT(*)...' request
+        with provided table name.
 
-    def close(self):
-        """Close connection"""
-        self.connection.close()
+        :param table_name: name of table
+        :type table_name: str
+        :return: result of sql request
+        :rtype: int
+        """
+        with self.connection_manager() as cursor:
+            cursor.execute(
+                self._count_template.format(table_name)
+            )
+            return cursor.fetchone()[0]
+
+    def select(self, table_name):
+        """
+        Generates a 'SELECT * FROM ...' request
+        with provided table name.
+
+        :param table_name: name of table
+        :type table_name: str
+        """
+        with self.connection_manager() as cursor:
+            cursor.execute(
+                self._select_template.format(table_name)
+                )
+            return cursor.fetchall()
+
+    def select_by_name(self, table_name, item):
+        """
+        Generates a request to get a row by provided item
+        from a certain table.
+
+        :param table_name: name of table
+        :type table_name: str
+        :param item: provied item
+        :type item: str
+        :return: sql request
+        :rtype: sqlite3.Row
+        """
+        with self.connection_manager() as cursor:
+            cursor.execute(
+                self._select_by_name_template.format(
+                    table_name), {"name": item}
+            )
+            return cursor.fetchone()
 
 
-#validate table name
-#if table name isalnum() raise smth
 class TableData:
-    """Wrapper class for database table which acts as collection object.
+    """
+    Wrapper class for database table which acts as collection object.
 
     :param database_path: path to database
     :type database_path: str
@@ -56,36 +120,35 @@ class TableData:
     :type table_name: str
     """
 
-    def __init__(self, database_path, table_name) -> None:
-        """Class constructor"""
-        self.database_path = database_path
+    def __init__(self, Database, table_name) -> None:
+        """
+        Class constructor.
+        """
+        if not table_name.isalnum():
+            raise NameError
         self.table_name = table_name
-        self.connection = Database(self.database_path)
-        self.cursor = self.connection.get_cursor()
-
-    def close_connection(self):
-        """Closing connection to a database."""
-        self.connection.close()
+        self.db = Database
 
     def __len__(self):
-        """Returns amount of rows in datatable"""
-        self.cursor.execute(f"SELECT COUNT(*) from {self.table_name}")
-        return self.cursor.fetchone()[0]
+        """Returns amount of rows in datatable."""
+        return self.db.count(self.table_name)
 
     def __getitem__(self, item):
-        """Returns a row data with datatable[item] construction.
+        """
+        Returns a row data with datatable[item] construction.
+
         :param item: requested element from database
         :type item: str
         :return: a row from data base
         :rtype: tuple
         """
-        self.cursor.execute(
-            f"SELECT * from {self.table_name} where name=:item", {"item": item}
-        )
-        return tuple(self.cursor.fetchone())
+        row = self.db.select_by_name(self.table_name, item)
+        print(type(row))
+        return tuple(row)
 
     def __contains__(self, item):
-        """Allows check contains of element using construction
+        """
+        Allows check contains of element using construction
             'element in datatable[item]'.
 
         :param item: requested element from database
@@ -93,35 +156,19 @@ class TableData:
         :return: element if exist
         :rtype: bool
         """
-        self.cursor.execute(
-            f"SELECT * from {self.table_name} where name=:item", {"item": item}
-        )
-        return self.cursor.fetchone()
+        return self.db.select_by_name(self.table_name, item)
 
     def __iter__(self):
-        """Allows iterating through datatable's row"""
-        self.cursor.execute(f"SELECT * from {self.table_name}")
-        return self
-
-    def __next__(self):
-        """Allows iterating trough datatable's rows."""
-        output = self.cursor.fetchone()
-        if output is not None:
-            return output
-        raise StopIteration
+        """Allows iterating through datatable's row."""
+        yield from self.db.select(self.table_name)
 
 
 if __name__ == "__main__":
     db_path = "homework8/example.sqlite"
-    presidents = TableData(db_path, "presidents")
+    db = SQLiteClass(db_path)
+    presidents = TableData(db, "presidents")
     print(len(presidents))
     print(presidents["Trump"])
+    print('Putin' in presidents)
     for president in presidents:
         print(president["name"])
-
-    presidents1 = TableData(db_path, "presidents")
-    print(id(presidents.connection))
-    print(id(presidents1.connection))
-    presidents.close_connection()
-    # print(len(presidents))
-    # print(len(presidents1))

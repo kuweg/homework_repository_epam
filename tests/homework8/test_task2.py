@@ -1,11 +1,11 @@
 import os
 
-from homework8.task2 import TableData
+from homework8.task2 import TableData, SQLiteClass
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 datatable_path = os.path.join(BASE_DIR, "example.sqlite")
-presidents = TableData(datatable_path, "presidents")
-presidents2 = TableData(datatable_path, "presidents")
+sqlite = SQLiteClass(datatable_path)
+presidents = TableData(sqlite, "presidents")
 
 
 def test_len():
@@ -29,7 +29,3 @@ def test_iteration(capsys):
         print(president["name"])
     captured = capsys.readouterr()
     assert captured.out == "Yeltsin\nTrump\nBig Man Tyrone\n"
-
-
-def test_singleton_connection():
-    assert id(presidents.cursor) == id(presidents2.cursor)
