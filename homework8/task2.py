@@ -143,7 +143,6 @@ class TableData:
         :rtype: tuple
         """
         row = self.db.select_by_name(self.table_name, item)
-        print(type(row))
         return tuple(row)
 
     def __contains__(self, item):
