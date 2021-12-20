@@ -51,7 +51,7 @@ class KeyValueStorage:
 
         for line in self._open_file(path_to_file, "r"):
             key, value = self._split_and_check_key(line.rstrip(), "=")
-            if value.isdigit():
+            if value.lstrip('-').isdigit():
                 self.items[key] = int(value)
             else:
                 self.items[key] = value
@@ -72,4 +72,4 @@ class KeyValueStorage:
 if __name__ == "__main__":
     path_to_file = "homework8/task1.txt"
     storage = KeyValueStorage(path_to_file)
-    print(storage.power)
+    print(storage)
