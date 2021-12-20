@@ -38,7 +38,7 @@ class AbsctractDatabaseClass:
         raise NotImplementedError
 
 
-class RelationalDataBase:
+class RelationalDataBaseMixin:
     """
     Base class for relational databases requests.
     """
@@ -85,7 +85,7 @@ class DatabaseConnection(metaclass=MetaSingleton):
 
 
 class SQLiteClass(AbsctractDatabaseClass,
-                  RelationalDataBase):
+                  RelationalDataBaseMixin):
     """
     Class for sql request based tables, which can be accessed
     using sqlite3 library.
@@ -158,18 +158,18 @@ class TableData:
 
     :param database_path: path to database
     :type database_path: str
-    :param table_name: name of chose table in database file
+    :param table_name: name of chosen table in database file
     :type table_name: str
     """
 
-    def __init__(self, Database, table_name) -> None:
+    def __init__(self, database, table_name) -> None:
         """
         Class constructor.
         """
         if not table_name.isalnum():
             raise NameError
         self.table_name = table_name
-        self.db = Database
+        self.db = database
 
     def __len__(self):
         """Returns amount of rows in datatable."""
