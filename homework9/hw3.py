@@ -89,5 +89,5 @@ def count_all_tokens(file_path: str, tokenizer: Callable = None):
 if __name__ == "__main__":
     cwd = os.getcwd() + "/homework9"
     cwd = Path(cwd)
-    b = universal_file_counter(cwd, "txt")
+    b = universal_file_counter(cwd, "txt", str.split)
     print(b)

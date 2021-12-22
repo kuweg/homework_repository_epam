@@ -6,7 +6,7 @@ from typing import Any, Callable
 class DummyIntegers:
     """
     Class for creating any amount of files
-    with random integers.
+    with random integers, one per row.
 
     :param n_files: amount of files
     :type n_files: int
@@ -14,63 +14,60 @@ class DummyIntegers:
     :type template_name: str
     :param file_size: amount of rows in file
     :type file_size: int
+    :param range_args: args for integer generator
+    :type range_args: tuple
     :param seed: use random.seed(0) to generate same values
     :type seed: bool
     """
     def __init__(self, n_files: int,
                  template_name: str,
                  file_size: int,
+                 range_args: tuple = (0, 11),
                  seed: bool = True) -> None:
 
-        self.n_files = n_files
         self.template_name = template_name
         self.file_size = file_size
-        self.cwd = os.getcwd()
+        self.cwd = os.getcwd() + '/'
+        self.file_list = [
+            self.cwd + self.template_name + str(order) + ".txt"
+            for order in range(n_files)
+        ]
+        self.range_args = range_args
         if seed:
             random.seed(0)
 
     def create_dummies(self):
         """
-        Creating dummie diles in current directory.
+        Creating dummy files in current directory.
         """
         os.chdir(self.cwd)
-        for i in range(self.n_files):
+        for file in self.file_list:
             random_numbers = sorted(
-                random.sample(range(0, 11), self.file_size)
+                random.sample(range(*self.range_args), self.file_size)
                 )
-            with open(self.template_name + str(i) + ".txt", "w") as file:
-                file.write("\n".join(str(number) for number in random_numbers))
+            with open(file, "w") as file_handler:
+                file_handler.write(
+                    "\n".join(str(number) for number in random_numbers)
+                    )
 
     def remove_dummies(self):
         """
         Removing created files.
         """
-        for i in range(self.n_files):
-            os.remove(self.template_name + str(i) + ".txt")
+        for file in self.file_list:
+            os.remove(file)
 
-    def get_paths(self, dir=None):
+    def get_paths(self):
         """
         Returns list of created files.
-        If more comples path needed put path prefix to dir.
-
-        :param dir: for more complex path
-        :type dir: str
-        :return: list of file paths
-        :rtype: list
         """
-        if dir:
-            return [
-                (dir + "/" + self.template_name + str(i) + ".txt")
-                for i in range(self.n_files)
-            ]
-        return [
-            self.template_name + str(i) + ".txt"
-            for i in range(self.n_files)
-            ]
+        return self.file_list
 
     def __call__(self, func: Callable) -> Any:
         """
-        Decorator attempt.
+        Using class object as decorator for functions.
+        Creating a temporary files for function needs
+        and deleting them after.
         """
         def wrapper(*args, **kwargs):
             self.create_dummies()

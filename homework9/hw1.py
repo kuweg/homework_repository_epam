@@ -15,6 +15,7 @@ file2.txt:
 [1, 2, 3, 4, 5, 6]
 """
 import heapq
+from contextlib import ExitStack
 from pathlib import Path
 from typing import Iterator, List, Union
 
@@ -28,13 +29,12 @@ def merge_sorted_files(file_list: List[Union[Path, str]]) -> Iterator:
     :type file_list: list[str]
     :return: iterator object
     """
+    with ExitStack() as stack:
+        files = [
+            stack.enter_context(open(fname)) for fname in file_list
+            ]
 
-    files = [open(fname, "r") for fname in file_list]
-
-    yield from (
-        int(num.rstrip()) for num
-        in heapq.merge(*files, key=lambda x: int(x.rstrip()))
-    )
-
-    for file_object in files:
-        file_object.close()
+        yield from (
+            int(num.rstrip()) for num
+            in heapq.merge(*files, key=lambda x: int(x.rstrip()))
+        )
