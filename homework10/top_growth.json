@@ -1,0 +1,82 @@
+[
+    {
+        "name": "Netflix",
+        "growth": "99.76",
+        "code": "Netflix Inc.",
+        "price": 44900.556,
+        "P_E": 87.1,
+        "profit": 222.45
+    },
+    {
+        "name": "Mid-America Apartment Communities",
+        "growth": "99.66",
+        "code": "Mid-America Apartment Communities IncShs",
+        "price": 16445.912,
+        "P_E": 50.66,
+        "profit": 102.62
+    },
+    {
+        "name": "Danaher",
+        "growth": "99.20",
+        "code": "Danaher Corp.",
+        "price": 23980.113,
+        "P_E": 35.2,
+        "profit": 122.74
+    },
+    {
+        "name": "Sherwin-Williams",
+        "growth": "97.18",
+        "code": "Sherwin-Williams Co.",
+        "price": 25310.023,
+        "P_E": 29.59,
+        "profit": 131.66
+    },
+    {
+        "name": "Motorola Solutions",
+        "growth": "95.97",
+        "code": "Motorola Solutions Inc.",
+        "price": 19702.579,
+        "P_E": 21.64,
+        "profit": 103.41
+    },
+    {
+        "name": "United Rentals",
+        "growth": "94.84",
+        "code": "United Rentals Inc.",
+        "price": 24413.652,
+        "P_E": 12.9,
+        "profit": 190.83
+    },
+    {
+        "name": "ServiceNow",
+        "growth": "93.45",
+        "code": "ServiceNow Inc",
+        "price": 48592.226,
+        "P_E": 117.35,
+        "profit": 259.33
+    },
+    {
+        "name": "Tyler Technologies",
+        "growth": "92.70",
+        "code": "Tyler Technologies Inc.",
+        "price": 39012.63,
+        "P_E": 77.6,
+        "profit": 184.75
+    },
+    {
+        "name": "Intuitive Surgical",
+        "growth": "92.33",
+        "code": "Intuitive Surgical Inc",
+        "price": 26699.251,
+        "P_E": 65.94,
+        "profit": 142.22
+    },
+    {
+        "name": "Equifax",
+        "growth": "90.60",
+        "code": "Equifax Inc.",
+        "price": 21318.097,
+        "P_E": 27.22,
+        "profit": 138.41
+    }
+]

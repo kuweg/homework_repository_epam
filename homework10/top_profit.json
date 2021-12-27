@@ -1,0 +1,82 @@
+[
+    {
+        "name": "NVR",
+        "growth": "1,659.17",
+        "code": "NVR Inc.",
+        "price": 426581.643,
+        "P_E": 17.87,
+        "profit": 2089.0
+    },
+    {
+        "name": "Alphabet C",
+        "growth": "1,206.60",
+        "code": "Alphabet C (ex Google)",
+        "price": 216863.122,
+        "P_E": 30.01,
+        "profit": 1337.33
+    },
+    {
+        "name": "Alphabet A",
+        "growth": "1,200.07",
+        "code": "Alphabet A (ex Google)",
+        "price": 216632.438,
+        "P_E": 30.0,
+        "profit": 1322.72
+    },
+    {
+        "name": "AutoZone",
+        "growth": "828.63",
+        "code": "AutoZone Inc.",
+        "price": 149961.206,
+        "P_E": 16.27,
+        "profit": 958.07
+    },
+    {
+        "name": "Amazon",
+        "growth": "235.47",
+        "code": "Amazon",
+        "price": 248507.791,
+        "P_E": 79.54,
+        "profit": 892.08
+    },
+    {
+        "name": "Booking Holdings",
+        "growth": "284.33",
+        "code": "Booking Holdings Inc Registered Shs",
+        "price": 175356.911,
+        "P_E": 460.92,
+        "profit": 826.56
+    },
+    {
+        "name": "Tesla",
+        "growth": "362.89",
+        "code": "Tesla",
+        "price": 80112.399,
+        "P_E": 299.31,
+        "profit": 704.0
+    },
+    {
+        "name": "Chipotle Mexican Grill",
+        "growth": "332.94",
+        "code": "Chipotle Mexican Grill Inc.",
+        "price": 129434.757,
+        "P_E": 129.05,
+        "profit": 702.28
+    },
+    {
+        "name": "Mettler-Toledo International",
+        "growth": "478.46",
+        "code": "Mettler-Toledo International Inc.",
+        "price": 122711.977,
+        "P_E": 43.78,
+        "profit": 642.24
+    },
+    {
+        "name": "Moderna",
+        "growth": "121.02",
+        "code": "Moderna Inc",
+        "price": 18079.738,
+        "P_E": -59.95,
+        "profit": 394.51
+    }
+]
