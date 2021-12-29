@@ -3,16 +3,24 @@ from functools import lru_cache
 
 import requests
 from bs4 import BeautifulSoup
+from requests.exceptions import RequestException
 
 
 @lru_cache(1)
 def get_usd_exchange_rate():
     """
     Get current usd to rub exchange rate.
+
+    :return: either usd exchange rate if request was successful
+             either 1
+    :rtype: float
     """
     today = datetime.date.today().strftime("%d/%m/%Y")
-    req = f"http://www.cbr.ru/scripts/XML_daily.asp?date_req={today}"
-    valutes = requests.get(req)
+    try:
+        req = f"http://www.cbr.ru/scripts/XML_daily.asp?date_req={today}"
+        valutes = requests.get(req)
+    except RequestException:
+        return 1.0
     valutes = valutes.text.split("</Valute>")
     for index, elem in enumerate(valutes):
         if '<Valute ID="R01235">' in elem:
@@ -42,7 +50,7 @@ def parse_main_page(content: str) -> list[dict]:
     comp = dict()
     comp["name"] = [elem.get("title") for elem in table.find_all("a")]
     comp["growth"] = [
-        (elem.text.split()[0])
+        float(elem.text.split()[0].replace(",", ""))
         for order, elem in enumerate(table.find_all("td"), 1)
         if order % _growth_orded == 0
     ]
@@ -166,3 +174,58 @@ def parse_company_price(company_data: BeautifulSoup):
         return round(float(price) * get_usd_exchange_rate(), 3)
     except AttributeError:
         return 0.0
+
+
+def _main_page_content_filter(content: str):
+    """
+    Parsing webpage to check that it's valid.
+
+    :param content: content of passed webpage
+    :type pages: str
+    :return: True if valid, else False
+    :rtype: bool
+    """
+    soup = BeautifulSoup(content, "html.parser")
+    compaies_table = soup.find("div", class_="table-responsive")
+
+    return compaies_table is not None
+
+
+def check_main_pages_content(pages: list):
+    """
+    Check pages with in-built filter()
+
+    :param pages: list of webpages content
+    :type pages: list
+    :return: list of validated pages
+    :rtype: list
+    """
+    check = filter(_main_page_content_filter, pages)
+    return list(check)
+
+
+def _company_page_filter(content: str):
+    """
+    Parsing webpage to check that it's valid.
+
+    :param content: content of passed webpage
+    :type pages: str
+    :return: True if valid, else False
+    :rtype: bool
+    """
+    soup = BeautifulSoup(content, "html.parser")
+    error_msg = soup.find("h1", class_="grid__col--12 header-underline")
+    return error_msg is None
+
+
+def check_company_pages(pages: list):
+    """
+    Check pages with in-built filter()
+
+    :param pages: list of webpages content
+    :type pages: list
+    :return: list of validated pages
+    :rtype: list
+    """
+    check = filter(_company_page_filter, pages)
+    return list(check)

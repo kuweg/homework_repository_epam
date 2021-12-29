@@ -4,7 +4,8 @@ from concurrent.futures import ProcessPoolExecutor
 from itertools import chain
 
 import aiohttp
-from utils import parse_company_page, parse_main_page
+from utils import (check_company_pages, check_main_pages_content,
+                   parse_company_page, parse_main_page)
 
 _workers = 40
 
@@ -20,7 +21,12 @@ async def fetch_page(url: str) -> str:
     """
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as response:
-            return await response.text()
+            if response.status == 200:
+                try:
+                    return await response.text()
+                except ValueError:
+                    pass
+            return None
 
 
 async def fetch_all_pages(urls: list[str]) -> list[str]:
@@ -34,7 +40,8 @@ async def fetch_all_pages(urls: list[str]) -> list[str]:
     """
     tasks = [asyncio.create_task(fetch_page(url)) for url in urls]
     await asyncio.gather(*tasks)
-    return [task.result() for task in tasks]
+    pages = [task.result() for task in tasks]
+    return pages
 
 
 async def parse_companies_data(urls) -> list[dict]:
@@ -48,10 +55,11 @@ async def parse_companies_data(urls) -> list[dict]:
     :rtype: list[dict]
     """
     companies_list = await fetch_all_pages(urls)
+    checked_pages = check_main_pages_content(companies_list)
     with ProcessPoolExecutor(max_workers=_workers) as pool:
-        companies_data = list(pool.map(parse_main_page, companies_list))
-        companies_data = list(chain.from_iterable(list(companies_data)))
-        return companies_data
+        companies_data = list(pool.map(parse_main_page, checked_pages))
+    companies_data = list(chain.from_iterable(list(companies_data)))
+    return companies_data
 
 
 async def combine_companies_data(urls: str) -> list[dict]:
@@ -67,9 +75,9 @@ async def combine_companies_data(urls: str) -> list[dict]:
     companies_list = await parse_companies_data(urls)
     companies_urls = [company.pop("url") for company in companies_list]
     companies_pages = await fetch_all_pages(companies_urls)
+    checked_pages = check_company_pages(companies_pages)
     with ProcessPoolExecutor(max_workers=_workers) as pool:
-        companies_data = list(pool.map(parse_company_page, companies_pages))
-
+        companies_data = list(pool.map(parse_company_page, checked_pages))
     for comp_main_info, comp_page_info in zip(companies_list, companies_data):
         comp_main_info |= comp_page_info
     return companies_list
@@ -118,9 +126,7 @@ async def main(urls: list):
 if __name__ == "__main__":
     PAGES_AMOUNT = 11
     url_template = (
-        "https://markets.businessinsider.com/" + "index/components/s&p_500?p="
+        "https://markets.businessinsider.com/index/components/s&p_500?p="
     )
     URLS = [url_template + str(page) for page in range(1, PAGES_AMOUNT + 1)]
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main(URLS))
-    loop.close()
+    asyncio.run(main(URLS))

@@ -1,81 +1,81 @@
 [
     {
         "name": "NVR",
-        "growth": "1,659.17",
+        "growth": 1659.17,
         "code": "NVR Inc.",
-        "price": 426581.643,
+        "price": 435535.968,
         "P_E": 17.87,
         "profit": 2089.0
     },
     {
         "name": "Alphabet C",
-        "growth": "1,206.60",
+        "growth": 1204.0,
         "code": "Alphabet C (ex Google)",
-        "price": 216863.122,
+        "price": 214074.448,
         "P_E": 30.01,
         "profit": 1337.33
     },
     {
         "name": "Alphabet A",
-        "growth": "1,200.07",
+        "growth": 1204.17,
         "code": "Alphabet A (ex Google)",
-        "price": 216632.438,
+        "price": 214387.54,
         "P_E": 30.0,
         "profit": 1322.72
     },
     {
         "name": "AutoZone",
-        "growth": "828.63",
+        "growth": 808.62,
         "code": "AutoZone Inc.",
-        "price": 149961.206,
+        "price": 154348.74,
         "P_E": 16.27,
-        "profit": 958.07
+        "profit": 988.39
     },
     {
         "name": "Amazon",
-        "growth": "235.47",
+        "growth": 248.68,
         "code": "Amazon",
-        "price": 248507.791,
+        "price": 248232.402,
         "P_E": 79.54,
         "profit": 892.08
     },
     {
         "name": "Booking Holdings",
-        "growth": "284.33",
+        "growth": 313.9,
         "code": "Booking Holdings Inc Registered Shs",
-        "price": 175356.911,
+        "price": 175729.432,
         "P_E": 460.92,
         "profit": 826.56
     },
     {
         "name": "Tesla",
-        "growth": "362.89",
+        "growth": 405.23,
         "code": "Tesla",
-        "price": 80112.399,
+        "price": 79623.988,
         "P_E": 299.31,
         "profit": 704.0
     },
     {
         "name": "Chipotle Mexican Grill",
-        "growth": "332.94",
+        "growth": 337.01,
         "code": "Chipotle Mexican Grill Inc.",
-        "price": 129434.757,
+        "price": 128430.41,
         "P_E": 129.05,
         "profit": 702.28
     },
     {
         "name": "Mettler-Toledo International",
-        "growth": "478.46",
+        "growth": 478.46,
         "code": "Mettler-Toledo International Inc.",
-        "price": 122711.977,
+        "price": 124362.412,
         "P_E": 43.78,
-        "profit": 642.24
+        "profit": 669.93
     },
     {
         "name": "Moderna",
-        "growth": "121.02",
+        "growth": 126.6,
         "code": "Moderna Inc",
-        "price": 18079.738,
+        "price": 18050.593,
         "P_E": -59.95,
         "profit": 394.51
     }

@@ -1,82 +1,82 @@
 [
     {
-        "name": "Netflix",
-        "growth": "99.76",
-        "code": "Netflix Inc.",
-        "price": 44900.556,
-        "P_E": 87.1,
-        "profit": 222.45
+        "name": "NVR",
+        "growth": 1659.17,
+        "code": "NVR Inc.",
+        "price": 435535.968,
+        "P_E": 17.87,
+        "profit": 2089.0
     },
     {
-        "name": "Mid-America Apartment Communities",
-        "growth": "99.66",
-        "code": "Mid-America Apartment Communities IncShs",
-        "price": 16445.912,
-        "P_E": 50.66,
-        "profit": 102.62
+        "name": "Alphabet A",
+        "growth": 1204.17,
+        "code": "Alphabet A (ex Google)",
+        "price": 214387.54,
+        "P_E": 30.0,
+        "profit": 1322.72
     },
     {
-        "name": "Danaher",
-        "growth": "99.20",
-        "code": "Danaher Corp.",
-        "price": 23980.113,
-        "P_E": 35.2,
-        "profit": 122.74
+        "name": "Alphabet C",
+        "growth": 1204.0,
+        "code": "Alphabet C (ex Google)",
+        "price": 214074.448,
+        "P_E": 30.01,
+        "profit": 1337.33
     },
     {
-        "name": "Sherwin-Williams",
-        "growth": "97.18",
-        "code": "Sherwin-Williams Co.",
-        "price": 25310.023,
-        "P_E": 29.59,
-        "profit": 131.66
+        "name": "AutoZone",
+        "growth": 808.62,
+        "code": "AutoZone Inc.",
+        "price": 154348.74,
+        "P_E": 16.27,
+        "profit": 988.39
     },
     {
-        "name": "Motorola Solutions",
-        "growth": "95.97",
-        "code": "Motorola Solutions Inc.",
-        "price": 19702.579,
-        "P_E": 21.64,
-        "profit": 103.41
+        "name": "Mettler-Toledo International",
+        "growth": 478.46,
+        "code": "Mettler-Toledo International Inc.",
+        "price": 124362.412,
+        "P_E": 43.78,
+        "profit": 669.93
     },
     {
-        "name": "United Rentals",
-        "growth": "94.84",
-        "code": "United Rentals Inc.",
-        "price": 24413.652,
-        "P_E": 12.9,
-        "profit": 190.83
+        "name": "Tesla",
+        "growth": 405.23,
+        "code": "Tesla",
+        "price": 79623.988,
+        "P_E": 299.31,
+        "profit": 704.0
     },
     {
-        "name": "ServiceNow",
-        "growth": "93.45",
-        "code": "ServiceNow Inc",
-        "price": 48592.226,
-        "P_E": 117.35,
-        "profit": 259.33
+        "name": "Chipotle Mexican Grill",
+        "growth": 337.01,
+        "code": "Chipotle Mexican Grill Inc.",
+        "price": 128430.41,
+        "P_E": 129.05,
+        "profit": 702.28
     },
     {
-        "name": "Tyler Technologies",
-        "growth": "92.70",
-        "code": "Tyler Technologies Inc.",
-        "price": 39012.63,
-        "P_E": 77.6,
-        "profit": 184.75
+        "name": "Booking Holdings",
+        "growth": 313.9,
+        "code": "Booking Holdings Inc Registered Shs",
+        "price": 175729.432,
+        "P_E": 460.92,
+        "profit": 826.56
     },
     {
-        "name": "Intuitive Surgical",
-        "growth": "92.33",
-        "code": "Intuitive Surgical Inc",
-        "price": 26699.251,
-        "P_E": 65.94,
-        "profit": 142.22
+        "name": "SVB Financial Group Shs",
+        "growth": 298.77,
+        "code": "SVB Financial Group Shs",
+        "price": 50395.404,
+        "P_E": 16.38,
+        "profit": 392.22
     },
     {
-        "name": "Equifax",
-        "growth": "90.60",
-        "code": "Equifax Inc.",
-        "price": 21318.097,
-        "P_E": 27.22,
-        "profit": 138.41
+        "name": "Intuit",
+        "growth": 254.55,
+        "code": "Intuit Inc.",
+        "price": 47457.773,
+        "P_E": 54.14,
+        "profit": 359.17
     }
 ]
