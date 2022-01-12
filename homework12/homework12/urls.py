@@ -15,7 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from school import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('set_homework/', views.set_homework),
+    path(
+        'check_homework_for_being_valid/', views.check_homework_for_being_valid
+        ),
+    path('complete_homework/', views.complete_homework),
+    path('reset_results/', views.reset_results)
 ]

@@ -3,8 +3,7 @@ from school.models import Homework, HomeworkResult, Student, Teacher
 
 
 class Command(BaseCommand):
-    args = "<foo bar ...>"
-    help = "our help string comes here"
+    help = "Drops existing tables."
 
     def handle(self, *args, **options):
         Homework.objects.all().delete()

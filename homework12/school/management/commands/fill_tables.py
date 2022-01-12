@@ -4,7 +4,7 @@ from school.fill_tables import fill_tables
 
 class Command(BaseCommand):
     args = "<foo bar ...>"
-    help = "our help string comes here"
+    help = "Fill tables with logic, described at fill_tables.py."
 
     def handle(self, *args, **options):
         fill_tables()

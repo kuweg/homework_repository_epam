@@ -1,6 +1,5 @@
 from django.test import TestCase
-from school.errors import AlreadyAcceptedError, InstanceError
-from school.models import Student, Teacher
+from school.models import Homework, HomeworkResult, Student, Teacher
 
 # Create your tests here.
 
@@ -18,96 +17,70 @@ class StudentTestCase(TestCase):
 
 class TeacherTestCase(TestCase):
     def setUp(self):
-        Teacher.objects.create(last_name="Teacher", first_name="One")
+        Teacher.objects.create(last_name="Teacher",
+                               first_name="One",
+                               aproving_length=5)
 
     def test_teacher_name(self):
         """Testing that object has correct attributes."""
         teacher_a: Teacher = Teacher.objects.get(id=1)
         self.assertEqual(teacher_a.first_name, "One")
         self.assertEqual(teacher_a.last_name, "Teacher")
+        self.assertEqual(teacher_a.aproving_length, 5)
 
 
-class HomeworkTestCase(TestCase):
+class TestCallsCreateHomework(TestCase):
     def setUp(self):
-        Student.objects.create(last_name="Ivanov", first_name="Ivan")
-        Teacher.objects.create(last_name="Teacher", first_name="One")
+        Student.objects.create(last_name="Ivanov",
+                               first_name="Ivan")
 
-    def test_homework_is_active(self):
-        """Testing that homework is active."""
-        teacher_a: Teacher = Teacher.objects.get(id=1)
-        homework1 = teacher_a.create_homework("Test django app", 1)
-        self.assertEqual(homework1.is_active(), True)
+        Teacher.objects.create(last_name="Teacher",
+                               first_name="One",
+                               aproving_length=5)
+        Homework.objects.create(text='TEST HW',
+                                deadline=5,
+                                author=Teacher.objects.get(pk=1))
 
-    def test_homework_author(self):
-        """Testing that homewprk author matches with teacher."""
-        teacher_a: Teacher = Teacher.objects.get(id=1)
-        homework1 = teacher_a.create_homework("Test django app again", 1)
-        self.assertEqual(homework1.author, teacher_a)
+    def test_create_homework_call(self):
+        """Testing that homework can be created using post request."""
+        data = {'teacher': 1, 'hometask': 'test me', 'deadline': 5}
+        resp = self.client.post('/set_homework/', data=data)
+        self.assertEqual(resp.status_code, 200)
 
-    def test_complete_homework(self):
-        """Testing that student can complete homework."""
-        student_a: Student = Student.objects.get(id=1)
-        teacher_a: Teacher = Teacher.objects.get(id=1)
-        homework1 = teacher_a.create_homework("Test django app", 1)
+    def test_complete_homework_call(self):
+        """Testing that homework can be complited using post request."""
+        data = {'homework': 1, 'student': 1, 'solution': 'hehehehe'}
+        resp = self.client.post('/complete_homework/', data=data)
+        self.assertEqual(resp.status_code, 200)
 
-        result1 = student_a.do_homework(homework1, "Test django")
-        self.assertEqual(result1.is_accepted, False)
 
-        teacher_a.check_homework(result1)
-        self.assertEqual(result1.is_accepted, True)
+class TestCallsCheckHomework(TestCase):
+    def setUp(self):
+        Student.objects.create(last_name="Ivanov",
+                               first_name="Ivan")
 
-    def test_failed_homework(self):
-        """Testing that homework could be completed wrong."""
-        student_a: Student = Student.objects.get(id=1)
-        teacher_a: Teacher = Teacher.objects.get(id=1)
-        homework1 = teacher_a.create_homework("Test django app", 1)
+        Teacher.objects.create(last_name="Teacher",
+                               first_name="One",
+                               aproving_length=5)
+        Homework.objects.create(text='TEST HW',
+                                deadline=5,
+                                author=Teacher.objects.get(pk=1))
+        HomeworkResult.objects.create(
+            author=Student.objects.get(pk=1),
+            homework=Homework.objects.get(pk=1),
+            solution="=(_/|_/|_)=",
+            is_accepted=0
+        )
 
-        result1 = student_a.do_homework(homework1, "NO")
-        self.assertEqual(result1.is_accepted, False)
-        teacher_a.check_homework(result1)
-        self.assertEqual(result1.is_accepted, False)
-
-    def test_already_accepted_error(self):
-        """Testing that teacher won't accept already accepted homework."""
-        student_a: Student = Student.objects.get(id=1)
-        teacher_a: Teacher = Teacher.objects.get(id=1)
-        homework1 = teacher_a.create_homework("Test django app", 1)
-        result1 = student_a.do_homework(homework1, "complete")
-        teacher_a.check_homework(result1)
-        with self.assertRaises(AlreadyAcceptedError) as ex:
-            teacher_a.check_homework(result1)
-        self.assertEqual(ex.exception.__class__, AlreadyAcceptedError)
-
-    def test_instance_errors(self):
-        """Testing InstanceError in Student and Teacher models."""
-        student_a: Student = Student.objects.get(id=1)
-        teacher_a: Teacher = Teacher.objects.get(id=1)
-        with self.assertRaises(InstanceError) as ex:
-            student_a.do_homework(123123, "complete")
-
-        self.assertEqual(ex.exception.__class__, InstanceError)
-
-        with self.assertRaises(InstanceError) as ex:
-            teacher_a.check_homework("homework")
-
-        self.assertEqual(ex.exception.__class__, InstanceError)
+    def test_check_homework_call(self):
+        """Testing that homework can be checked using post request."""
+        data = {'homework_res': 1, 'teacher': 1}
+        resp = self.client.post('/check_homework_for_being_valid/', data=data)
+        self.assertEqual(resp.status_code, 200)
 
     def test_reset_results(self):
-        """Testing that teacher can cancel accepted homework."""
-        student_a: Student = Student.objects.get(id=1)
-        teacher_a: Teacher = Teacher.objects.get(id=1)
-        homework1 = teacher_a.create_homework("Test django app", 1)
-        result1 = student_a.do_homework(homework1, "complete")
-        self.assertEqual(result1.is_accepted, False)
-        teacher_a.check_homework(result1)
-        self.assertEqual(result1.is_accepted, True)
-        teacher_a.reset_results(homework1)
-        self.assertEqual(
-            any(
-                homework1.homework_results.values_list(
-                    "is_accepted",
-                    flat=True
-                )
-            ),
-            False
-        )
+        """
+        Testing that is_accepted field can be nullified using get request.
+        """
+        resp = self.client.get('/reset_results/?homework=1')
+        self.assertEqual(resp.status_code, 200)
