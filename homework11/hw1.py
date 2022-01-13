@@ -36,6 +36,9 @@ assert SizesEnum.XL == "XL"
 
 
 class SimplifiedEnum(type):
+    """
+    Removes duplicates in variables declaration.
+    """
     def __new__(cls, name, bases, dct):
         cls_instance = super().__new__(cls, name, bases, dct)
         key_attr = f"_{cls_instance.__name__}__keys"
