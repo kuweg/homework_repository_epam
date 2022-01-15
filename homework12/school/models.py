@@ -14,7 +14,7 @@ class Homework(models.Model):
 
     def __str__(self) -> str:
         return (
-            f"[Text: '{self.text}' | Created: {self.created}" +
+            f"[Text: '{self.text}' | Created: {self.created}"
             f" | Deadline: {self.deadline}]"
         )
 
@@ -34,8 +34,8 @@ class HomeworkResult(models.Model):
 
     def __str__(self):
         return (
-            f"[Author: {self.author} | Homework: '{self.homework.text}'" +
-            f" | Solution: '{self.solution} |" +
+            f"[Author: {self.author} | Homework: '{self.homework.text}'"
+            f" | Solution: '{self.solution} |"
             f"is_accepted: {self.is_accepted}']"
         )
 
