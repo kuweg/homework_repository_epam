@@ -2,22 +2,14 @@ from school.models import Student, Teacher
 
 
 def fill_tables():
-    student_a: Student = Student.objects.create(
-        last_name="Petrov", first_name="Ivan"
-    )
+    student_a: Student = Student.objects.create(last_name="Petrov", first_name="Ivan")
     student_b: Student = Student.objects.create(
         last_name="Markov", first_name="Nikolai"
     )
-    teacher_a: Teacher = Teacher.objects.create(
-        last_name="One", first_name="Teacher"
-    )
-    teacher_b: Teacher = Teacher.objects.create(
-        last_name="Two", first_name="Teacher"
-    )
+    teacher_a: Teacher = Teacher.objects.create(last_name="One", first_name="Teacher")
+    teacher_b: Teacher = Teacher.objects.create(last_name="Two", first_name="Teacher")
 
-    homework1 = teacher_a.create_homework(
-        homework_task="Learn django", deadline_days=5
-    )
+    homework1 = teacher_a.create_homework(homework_task="Learn django", deadline_days=5)
     homework2 = teacher_a.create_homework(
         homework_task="Write django models", deadline_days=3
     )
