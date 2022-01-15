@@ -82,7 +82,7 @@ def complete_homework(request):
     except Exception as err:
         return JsonResponse(
             {"success": False, "message": f"{err}"}, status=405
-            )
+        )
     return JsonResponse(
         {
             "Success": True,
