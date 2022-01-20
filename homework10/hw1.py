@@ -47,7 +47,7 @@ async def fetch_all_pages(urls: list[str]) -> list[str]:
 async def parse_companies_data(urls) -> list[dict]:
     """
     Parses list of companies from list of url.
-    Forms dict with company inforamtion.
+    Forms dict with company information.
 
     :param urls: list of webpages urls
     :type urls: str

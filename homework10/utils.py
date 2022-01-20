@@ -1,5 +1,7 @@
+from concurrent.futures import process
 import datetime
 from functools import lru_cache
+from typing import Any
 
 import requests
 from bs4 import BeautifulSoup
@@ -229,3 +231,41 @@ def check_company_pages(pages: list):
     """
     check = filter(_company_page_filter, pages)
     return list(check)
+
+
+def _reshape(lst, fill_missing):
+    max_length = len(max(lst, key = len))
+    new_list = []
+    for order in range(max_length):
+        buffer = []
+        for sublist in lst:
+            try:
+                buffer.append(sublist[order])
+            except:
+                buffer.append(fill_missing)
+        new_list.append(buffer)
+    return new_list
+
+
+def format_data(raw_data: list, missing_filler: Any = None) -> list[dict]:
+    processed_data = []
+    for lst in raw_data:
+        keys = list(map(lambda x: [*x], lst))
+        keys = [value for col in keys for value in col]
+        dict_values = list(map(lambda x: list(*x.values()), lst))
+        reshaped_values = _reshape(dict_values, missing_filler)
+
+        res = []
+        for lst_ in reshaped_values:
+            res.append({key: value for key, value in zip(keys, lst_)})
+        processed_data.append(res)
+    processed_data = [value for col in processed_data for value in col]  
+    return processed_data
+
+
+def merge_two_list_dicts(list_a: list[dict], list_b: list[dict]) -> list[dict]:
+    for dict_a, dict_b in zip(list_a, list_b):
+        dict_a |= dict_b
+
+    return list_a
+
