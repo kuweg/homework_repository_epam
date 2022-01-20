@@ -1,0 +1,82 @@
+[
+    {
+        "name": "NVR",
+        "growth": 1659.17,
+        "code": "NVR Inc.",
+        "price": 435535.968,
+        "P_E": 17.87,
+        "profit": 2089.0
+    },
+    {
+        "name": "Alphabet A",
+        "growth": 1204.17,
+        "code": "Alphabet A (ex Google)",
+        "price": 214387.54,
+        "P_E": 30.0,
+        "profit": 1322.72
+    },
+    {
+        "name": "Alphabet C",
+        "growth": 1204.0,
+        "code": "Alphabet C (ex Google)",
+        "price": 214074.448,
+        "P_E": 30.01,
+        "profit": 1337.33
+    },
+    {
+        "name": "AutoZone",
+        "growth": 808.62,
+        "code": "AutoZone Inc.",
+        "price": 154348.74,
+        "P_E": 16.27,
+        "profit": 988.39
+    },
+    {
+        "name": "Mettler-Toledo International",
+        "growth": 478.46,
+        "code": "Mettler-Toledo International Inc.",
+        "price": 124362.412,
+        "P_E": 43.78,
+        "profit": 669.93
+    },
+    {
+        "name": "Tesla",
+        "growth": 405.23,
+        "code": "Tesla",
+        "price": 79623.988,
+        "P_E": 299.31,
+        "profit": 704.0
+    },
+    {
+        "name": "Chipotle Mexican Grill",
+        "growth": 337.01,
+        "code": "Chipotle Mexican Grill Inc.",
+        "price": 128430.41,
+        "P_E": 129.05,
+        "profit": 702.28
+    },
+    {
+        "name": "Booking Holdings",
+        "growth": 313.9,
+        "code": "Booking Holdings Inc Registered Shs",
+        "price": 175729.432,
+        "P_E": 460.92,
+        "profit": 826.56
+    },
+    {
+        "name": "SVB Financial Group Shs",
+        "growth": 298.77,
+        "code": "SVB Financial Group Shs",
+        "price": 50395.404,
+        "P_E": 16.38,
+        "profit": 392.22
+    },
+    {
+        "name": "Intuit",
+        "growth": 254.55,
+        "code": "Intuit Inc.",
+        "price": 47457.773,
+        "P_E": 54.14,
+        "profit": 359.17
+    }
+]
