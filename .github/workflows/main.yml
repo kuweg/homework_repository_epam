@@ -15,8 +15,8 @@ jobs:
         uses: actions/checkout@v2
       - name: Run script
         run: |
-          pip install flake8 isort pytest
+          pip install flake8 isort pytest django python-dotenv
           ls -la
-          flake8 .
+          flake8 --ignore E501 homework12 .
           isort --check .
           py.test tests
